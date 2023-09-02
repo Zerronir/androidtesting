@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">TestApp</string>
+    <string name="text_login">Login!</string>
     <string name="email">Email</string>
     <string name="apellidos">Apellidos</string>
-    <string name="contrase_a">Contraseña</string>
+    <string name="password">Contraseña</string>
     <string name="confirmar_contrase_a">Confirmar contraseña</string>
-    <string name="registrate">Registrate</string>
-    <string name="nombre">Nombre</string>
+    <string name="register">Registrate</string>
+    <string name="username">Usuario</string>
+    <string name="text_validation_success">Validator ok!</string>
+    <string name="text_validation_error_empty_field">Validator failed!</string>
+    <string name="text_validation_error_email">Email is required</string>
+    <string name="text_validation_error_min_pass_length">Password must be at least 6 characters long</string>
+    <string name="text_validation_error_max_pass_length">Password cannot be longer than 12 characters</string>
 </resources>

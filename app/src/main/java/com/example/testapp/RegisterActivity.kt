@@ -2,10 +2,15 @@ package com.example.testapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import com.example.testapp.databinding.ActivityRegisterBinding
+import com.example.testapp.validator.EmailValidator
+import com.example.testapp.validator.EmptyValidator
+import com.example.testapp.validator.PasswordValidator
+import com.example.testapp.validator.base.BaseValidator
 
 class RegisterActivity : AppCompatActivity(),
     View.OnClickListener,
@@ -13,45 +18,49 @@ class RegisterActivity : AppCompatActivity(),
     View.OnKeyListener
 {
 
-    private lateinit var mBinding: ActivityRegisterBinding
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = ActivityRegisterBinding.inflate(LayoutInflater.from(this))
-        setContentView(mBinding.root)
-    }
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    private fun validateFullName(): Boolean
-    {
-        var error: String? = null
-        val value: String = mBinding.firstname.toString()
-        if (value.isEmpty()) {
-            error = "Full name is required"
+        binding.buttonLogin.setOnClickListener {
+            val username = binding.inputEditTextUsername.text.toString()
+            val email = binding.inputEditTextEmail.text.toString()
+            val password = binding.inputEditTextPassword.text.toString()
+
+            val usernameEmptyValidation = EmptyValidator(username).validate()
+            binding.inputLayoutUsername.error =
+                if (!usernameEmptyValidation.isSuccess)
+                    getString(usernameEmptyValidation.message) else null
+
+            val emailValidations = BaseValidator.validate(
+                EmptyValidator(email), EmailValidator(email)
+            )
+
+            binding.inputLayoutEmail.error =
+                if (!emailValidations.isSuccess) getString(emailValidations.message) else null
+
+
+            val passwordValidations = BaseValidator.validate(
+                EmptyValidator(password), PasswordValidator(password)
+            )
+            binding.inputLayoutPassword.error =
+                if (!passwordValidations.isSuccess) getString(passwordValidations.message) else null
         }
 
-        return error == null
     }
 
-    private fun validateEmail(): Boolean
-    {
-        var error: String? = null
-        val value: String = mBinding.email.toString()
-        if (value.isEmpty()) {
-            error = "Email is required"
-        }
-
-        return error == null
+    override fun onClick(view: View?) {
+        TODO("todo")
     }
 
-    override fun onClick(p0: View?) {
-        TODO("Not yet implemented")
+    override fun onFocusChange(view: View?, hasFocus: Boolean) {
+        TODO("todo")
     }
 
-    override fun onFocusChange(p0: View?, p1: Boolean) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onKey(p0: View?, p1: Int, p2: KeyEvent?): Boolean {
-        TODO("Not yet implemented")
+    override fun onKey(view: View?, event: Int, keyEvent: KeyEvent?): Boolean {
+        return false
     }
 }
