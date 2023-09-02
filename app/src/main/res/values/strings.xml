@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TestApp</string>
+    <string name="email">Email</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="confirmar_contrase_a">Confirmar contraseña</string>
+    <string name="registrate">Registrate</string>
+    <string name="nombre">Nombre</string>
+</resources>
