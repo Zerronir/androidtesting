@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -38,8 +37,8 @@
             android:id="@+id/inputEditText_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
             android:hint="@string/username"
+            android:inputType="text"
             android:nextFocusForward="@id/inputLayout_email"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -93,13 +92,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
+        android:background="#00FFFFFF"
+        android:forceHasOverlappingRendering="false"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/register"
         android:textAllCaps="false"
+        android:textColorHighlight="#FD0000"
+        android:textColorLink="#FA0000"
+        app:backgroundTint="#FF0000"
+        app:backgroundTintMode="add"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayout_password" />
+        app:layout_constraintTop_toBottomOf="@+id/inputLayout_password"
+        app:strokeColor="#FF0101" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

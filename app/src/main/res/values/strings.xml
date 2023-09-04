@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TestApp</string>
-    <string name="text_login">Login!</string>
+    <string name="text_login">Registrate</string>
     <string name="email">Email</string>
     <string name="apellidos">Apellidos</string>
     <string name="password">Contraseña</string>

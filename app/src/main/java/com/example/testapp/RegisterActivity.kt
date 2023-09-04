@@ -1,16 +1,18 @@
 package com.example.testapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.testapp.databinding.ActivityRegisterBinding
 import com.example.testapp.validator.EmailValidator
 import com.example.testapp.validator.EmptyValidator
 import com.example.testapp.validator.PasswordValidator
 import com.example.testapp.validator.base.BaseValidator
+import com.example.testapp.validator.base.ValidateResult
 
 class RegisterActivity : AppCompatActivity(),
     View.OnClickListener,
@@ -48,8 +50,31 @@ class RegisterActivity : AppCompatActivity(),
             )
             binding.inputLayoutPassword.error =
                 if (!passwordValidations.isSuccess) getString(passwordValidations.message) else null
+
+            val isValid = isValidForm(usernameEmptyValidation, emailValidations, passwordValidations)
+            if (isValid) {
+                val intent = Intent(this@RegisterActivity, HomePage::class.java)
+                startActivity(intent)
+            } else {
+                val builder: AlertDialog.Builder = this@RegisterActivity.let {
+                    AlertDialog.Builder(it)
+                }
+
+                builder
+                    .setMessage("Revisa los campos por favor")
+                    .setTitle("Error en el registro")
+
+                val dialog: AlertDialog = builder.create()
+
+                dialog.show()
+            }
         }
 
+    }
+
+    private fun isValidForm(username: ValidateResult, email: ValidateResult, password: ValidateResult): Boolean
+    {
+        return username.isSuccess && email.isSuccess && password.isSuccess;
     }
 
     override fun onClick(view: View?) {
