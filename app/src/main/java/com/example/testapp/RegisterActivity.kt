@@ -4,15 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.testapp.api.RetrofitClient
 import com.example.testapp.databinding.ActivityRegisterBinding
+import com.example.testapp.entities.User
 import com.example.testapp.validator.EmailValidator
 import com.example.testapp.validator.EmptyValidator
 import com.example.testapp.validator.PasswordValidator
 import com.example.testapp.validator.base.BaseValidator
 import com.example.testapp.validator.base.ValidateResult
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity(),
     View.OnClickListener,
@@ -53,8 +61,7 @@ class RegisterActivity : AppCompatActivity(),
 
             val isValid = isValidForm(usernameEmptyValidation, emailValidations, passwordValidations)
             if (isValid) {
-                val intent = Intent(this@RegisterActivity, HomePage::class.java)
-                startActivity(intent)
+                getData()
             } else {
                 val builder: AlertDialog.Builder = this@RegisterActivity.let {
                     AlertDialog.Builder(it)
@@ -72,9 +79,44 @@ class RegisterActivity : AppCompatActivity(),
 
     }
 
+    private fun getData()
+    {
+        val apiService = RetrofitClient.instance
+
+        apiService.getIndex().enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val body = response.body()?.string()
+                    val jsonResponse = body?.let { JSONObject(it) }
+
+                    if (jsonResponse != null) {
+                        val u: User = User(
+                            jsonResponse.getInt("id"),
+                            jsonResponse.get("username").toString(),
+                            jsonResponse.get("email").toString()
+                        )
+
+                        val intent = Intent(this@RegisterActivity, HomePage::class.java)
+                        intent.putExtra("user", u.toString())
+                        startActivity(intent)
+                    }
+                } else {
+                    val code : Int = response.code()
+                    println(code)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                println(t.message)
+            }
+        })
+    }
+
     private fun isValidForm(username: ValidateResult, email: ValidateResult, password: ValidateResult): Boolean
     {
-        return username.isSuccess && email.isSuccess && password.isSuccess;
+        return true
+        //return username.isSuccess && email.isSuccess && password.isSuccess;
     }
 
     override fun onClick(view: View?) {
